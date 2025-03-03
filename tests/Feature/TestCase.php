@@ -40,17 +40,17 @@ abstract class TestCase extends BaseTestCase
         parent::tearDown();
     }
 
-    public function test_size_does_not_throw_exception_on_unknown_queue(): void
+    public function testSizeDoesNotThrowExceptionOnUnknownQueue(): void
     {
         $this->assertEmpty(0, Queue::size(Str::random()));
     }
 
-    public function test_pop_nothing(): void
+    public function testPopNothing(): void
     {
         $this->assertNull(Queue::pop('foo'));
     }
 
-    public function test_push_raw(): void
+    public function testPushRaw(): void
     {
         Queue::pushRaw($payload = Str::random());
 
@@ -68,9 +68,9 @@ abstract class TestCase extends BaseTestCase
         $this->assertSame(0, Queue::size());
     }
 
-    public function test_push(): void
+    public function testPush(): void
     {
-        Queue::push(new TestJob);
+        Queue::push(new TestJob());
 
         sleep(1);
 
@@ -95,9 +95,9 @@ abstract class TestCase extends BaseTestCase
         $this->assertSame(0, Queue::size());
     }
 
-    public function test_push_after_commit(): void
+    public function testPushAfterCommit(): void
     {
-        $transaction = new DatabaseTransactionsManager;
+        $transaction = new DatabaseTransactionsManager();
 
         $this->app->singleton('db.transactions', function ($app) use ($transaction) {
             $transaction->begin('FakeDBConnection', 1);
@@ -122,7 +122,7 @@ abstract class TestCase extends BaseTestCase
         $this->assertSame(0, Queue::size());
     }
 
-    public function test_later_raw(): void
+    public function testLaterRaw(): void
     {
         $payload = Str::random();
         $data = [Str::random() => Str::random()];
@@ -152,9 +152,9 @@ abstract class TestCase extends BaseTestCase
         $this->assertSame(0, Queue::size());
     }
 
-    public function test_later(): void
+    public function testLater(): void
     {
-        Queue::later(3, new TestJob);
+        Queue::later(3, new TestJob());
 
         sleep(1);
 
@@ -179,7 +179,7 @@ abstract class TestCase extends BaseTestCase
         $this->assertSame(0, Queue::size());
     }
 
-    public function test_bulk(): void
+    public function testBulk(): void
     {
         $count = 100;
         $jobs = [];
@@ -195,9 +195,9 @@ abstract class TestCase extends BaseTestCase
         $this->assertSame($count, Queue::size());
     }
 
-    public function test_push_encrypted(): void
+    public function testPushEncrypted(): void
     {
-        Queue::push(new TestEncryptedJob);
+        Queue::push(new TestEncryptedJob());
 
         sleep(1);
 
@@ -222,9 +222,9 @@ abstract class TestCase extends BaseTestCase
         $this->assertSame(0, Queue::size());
     }
 
-    public function test_push_encrypted_after_commit(): void
+    public function testPushEncryptedAfterCommit(): void
     {
-        $transaction = new DatabaseTransactionsManager;
+        $transaction = new DatabaseTransactionsManager();
 
         $this->app->singleton('db.transactions', function ($app) use ($transaction) {
             $transaction->begin('FakeDBConnection', 1);
@@ -249,9 +249,9 @@ abstract class TestCase extends BaseTestCase
         $this->assertSame(0, Queue::size());
     }
 
-    public function test_encrypted_later(): void
+    public function testEncryptedLater(): void
     {
-        Queue::later(3, new TestEncryptedJob);
+        Queue::later(3, new TestEncryptedJob());
 
         sleep(1);
 
@@ -276,7 +276,7 @@ abstract class TestCase extends BaseTestCase
         $this->assertSame(0, Queue::size());
     }
 
-    public function test_encrypted_bulk(): void
+    public function testEncryptedBulk(): void
     {
         $count = 100;
         $jobs = [];
@@ -292,7 +292,7 @@ abstract class TestCase extends BaseTestCase
         $this->assertSame($count, Queue::size());
     }
 
-    public function test_release_raw(): void
+    public function testReleaseRaw(): void
     {
         Queue::pushRaw($payload = Str::random());
 
@@ -318,9 +318,9 @@ abstract class TestCase extends BaseTestCase
         $this->assertSame(0, Queue::size());
     }
 
-    public function test_release(): void
+    public function testRelease(): void
     {
-        Queue::push(new TestJob);
+        Queue::push(new TestJob());
 
         sleep(1);
 
@@ -344,7 +344,7 @@ abstract class TestCase extends BaseTestCase
         $this->assertSame(0, Queue::size());
     }
 
-    public function test_release_with_delay_raw(): void
+    public function testReleaseWithDelayRaw(): void
     {
         Queue::pushRaw($payload = Str::random());
 
@@ -375,9 +375,9 @@ abstract class TestCase extends BaseTestCase
         $this->assertSame(0, Queue::size());
     }
 
-    public function test_release_in_the_past(): void
+    public function testReleaseInThePast(): void
     {
-        Queue::push(new TestJob);
+        Queue::push(new TestJob());
 
         $job = Queue::pop();
         $job->release(-3);
@@ -390,9 +390,9 @@ abstract class TestCase extends BaseTestCase
         $this->assertSame(0, Queue::size());
     }
 
-    public function test_release_and_release_with_delay_attempts(): void
+    public function testReleaseAndReleaseWithDelayAttempts(): void
     {
-        Queue::push(new TestJob);
+        Queue::push(new TestJob());
 
         sleep(1);
 
@@ -417,9 +417,9 @@ abstract class TestCase extends BaseTestCase
         $this->assertSame(0, Queue::size());
     }
 
-    public function test_delete(): void
+    public function testDelete(): void
     {
-        Queue::push(new TestJob);
+        Queue::push(new TestJob());
 
         $job = Queue::pop();
 
@@ -431,9 +431,9 @@ abstract class TestCase extends BaseTestCase
         $this->assertNull(Queue::pop());
     }
 
-    public function test_failed(): void
+    public function testFailed(): void
     {
-        Queue::push(new TestJob);
+        Queue::push(new TestJob());
 
         $job = Queue::pop();
 

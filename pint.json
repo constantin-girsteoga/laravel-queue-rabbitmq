@@ -1,6 +1,12 @@
 {
   "preset": "laravel",
   "rules": {
+    "php_unit_method_casing": {
+      "case": "camel_case"
+    },
+    "new_with_parentheses": {
+      "named_class": true
+    },
     "nullable_type_declaration_for_default_null_value": {
       "use_nullable_type_declaration": false
     }

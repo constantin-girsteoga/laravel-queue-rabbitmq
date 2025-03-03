@@ -20,16 +20,16 @@ class QueueTest extends TestCase
         ]);
     }
 
-    public function test_connection(): void
+    public function testConnection(): void
     {
         $this->assertInstanceOf(AMQPStreamConnection::class, $this->connection()->getChannel()->getConnection());
     }
 
-    public function test_without_reconnect(): void
+    public function testWithoutReconnect(): void
     {
         $queue = $this->connection('rabbitmq');
 
-        $queue->push(new TestJob);
+        $queue->push(new TestJob());
         sleep(1);
         $this->assertSame(1, $queue->size());
 
@@ -38,6 +38,6 @@ class QueueTest extends TestCase
         $this->assertFalse($queue->getConnection()->isConnected());
 
         $this->expectException(AMQPChannelClosedException::class);
-        $queue->push(new TestJob);
+        $queue->push(new TestJob());
     }
 }
